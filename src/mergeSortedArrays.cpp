@@ -22,5 +22,46 @@ struct transaction {
 };
 
 struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	return NULL;
+	if (A == NULL || B == NULL)
+		return NULL;
+	int i = 0, j = 0, len = 0;
+	transaction * ans = NULL;
+	while (i != ALen && j != BLen){
+		if (A[i].amount < B[j].amount){
+			len++;
+			ans = (transaction*)realloc(ans, sizeof(transaction)*len);
+			ans[len - 1] = A[i];
+			i++;
+		}
+		else if (A[i].amount > B[j].amount){
+			len++;
+			ans = (transaction*)realloc(ans, sizeof(transaction)*len);
+			ans[len - 1] = B[j];
+			j++;
+		}
+		else{
+			len+=2;
+			ans = (transaction*)realloc(ans, sizeof(transaction)*len);
+			ans[len - 1] = A[i];
+			ans[len - 2] = B[j];
+			i++; j++;
+		}
+	}
+	if (i != ALen){
+		while (i != ALen){
+			len++;
+			ans = (transaction*)realloc(ans, sizeof(transaction)*len);
+			ans[len - 1] = A[i];
+			i++;
+		}
+	}
+	else{
+		while (j != BLen){
+			len++;
+			ans = (transaction*)realloc(ans, sizeof(transaction)*len);
+			ans[len - 1] = B[j];
+			j++;
+		}
+	}
+	return ans;
 }
